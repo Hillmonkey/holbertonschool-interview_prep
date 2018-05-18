@@ -9,32 +9,35 @@
 int check_cycle(listint_t *list)
 {
 	listint_t *turtle, *hare;
-	int status = 2; /* 0= no cycle, 1 = is cycle, 2 = continue */
 
 	turtle = hare = list;
-
-	while (status == 2)
+	if (list && list->next && list->next->next)
+	{
+		turtle = list->next;
+		hare = list->next->next;
+	}
+	else
+		return (0);
+	while (1)
 	{
 		if (turtle->next)
 			turtle = turtle->next;
-		else if (hare->next)
+		else
+			return (0);
+		if (hare->next)
 		{
 			hare = hare->next;
 			if (hare == turtle)
-				status = 1;
-			else if (hare->next == NULL)
-				status = 0;
-			else
-			{
-				hare = hare->next;
-				if (hare == turtle)
-					status = 1;
-				else if (hare->next  == NULL)
-					status = 0;
-			}
+				return (1);
+			if (hare->next == NULL)
+				return (0);
+			hare = hare->next;
+			if (hare == turtle)
+				return (1);
+			if (hare->next  == NULL)
+				return (0);
 		}
 		else
-			status = 0;
+			return (0);
 	}
-	return status;
 }
